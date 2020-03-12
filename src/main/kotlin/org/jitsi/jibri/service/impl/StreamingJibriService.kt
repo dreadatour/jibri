@@ -75,7 +75,7 @@ class StreamingJibriService(
 
     init {
         sink = StreamSink(
-            url = "$YOUTUBE_URL/${streamingParams.youTubeStreamKey}",
+            url = "${streamingParams.youTubeStreamKey}",
             streamingMaxBitrate = STREAMING_MAX_BITRATE,
             streamingBufSize = 2 * STREAMING_MAX_BITRATE
         )
@@ -94,11 +94,6 @@ class StreamingJibriService(
             try {
                 jibriSelenium.addToPresence("session_id", streamingParams.sessionId)
                 jibriSelenium.addToPresence("mode", JibriIq.RecordingMode.STREAM.toString())
-                streamingParams.youTubeBroadcastId?.let {
-                    if (!jibriSelenium.addToPresence("live-stream-view-url", "http://youtu.be/$it")) {
-                        logger.error("Error adding live stream url to presence")
-                    }
-                }
                 jibriSelenium.sendPresence()
                 capturer.start(sink)
             } catch (t: Throwable) {
